@@ -1,5 +1,5 @@
 # app/services/interview_service.py
-
+from services.data_loader import load_curriculum, load_candidates
 sessions = {}
 
 
@@ -7,6 +7,11 @@ def process(request):
 
     # First request of interview
     if request.sessionId not in sessions:
+        
+        curriculum = load_curriculum()
+        candidates = load_candidates()
+        print(curriculum)
+        print(candidates)
 
         sessions[request.sessionId] = {
             "candidate": request.candidate,
