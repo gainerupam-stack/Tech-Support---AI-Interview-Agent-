@@ -2,6 +2,7 @@
 from services.data_loader import load_curriculum, load_candidates
 from services.topic_selector import choose_topic
 from services.question_generator import generate_question
+from services.evaluator import evaluate_answer
 sessions = {}
 
 
@@ -27,10 +28,12 @@ def process(request):
         question = generate_question(topic)
 
         sessions[request.sessionId] = {
-            "candidate": request.candidate,
-            "history": [],
-            "question_number": 1
-        }
+                "candidate": request.candidate,
+                "history": [],
+                "question_number": 1,
+                "current_topic": topic,
+                "current_question": question
+                }
 
         return {
                 "reply": f"Welcome!\n\nFirst Question:\n\n{question}","done": False
@@ -43,8 +46,12 @@ def process(request):
         )
 
         sessions[request.sessionId]["question_number"] += 1
-
+        question = sessions[request.sessionId]["current_question"]
+        result = evaluate_answer(question,request.message)
         return {
-            "reply": f"Question {sessions[request.sessionId]['question_number']}",
-            "done": False
-        }
+        "reply":
+        f"Score: {result['score']}/10\n"
+        f"Feedback: {result['feedback']}\n\n"
+        f"Question {sessions[request.sessionId]['question_number']}",
+         "done": False
+                }
