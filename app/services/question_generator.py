@@ -1,32 +1,20 @@
+from services.llm_service import ask_llm
+
 def generate_question(topic):
 
-    questions = {
-        "Embeddings Explained":
-            "What are embeddings, and why are they useful in AI applications?",
+    prompt = f"""
+You are an AI technical interviewer.
 
-        "Vector Databases Overview":
-            "What problem does a vector database solve?",
+Generate ONE interview question.
 
-        "Retrieval & Matching Engine":
-            "How does semantic search differ from keyword search?",
+Topic:
+Title: {topic["title"]}
+Type: {topic["type"]}
 
-        "Prompt Engineering Fundamentals":
-            "What is the difference between zero-shot and few-shot prompting?",
+Learning objectives:
+{chr(10).join("- " + obj for obj in topic["objectives"])}
 
-        "Chatbot Backend & API Integration":
-            "How would you design a FastAPI endpoint for a chatbot?",
+Return only the interview question.
+"""
 
-        "Multi-Agent Orchestration":
-            "Why would you use multiple AI agents instead of one?",
-
-        "Model Context Protocol (MCP)":
-            "Can you explain what MCP is and why it exists?",
-
-        "Docker & Kubernetes Deployment":
-            "Why is Docker useful when deploying AI applications?"
-    }
-
-    return questions.get(
-        topic["title"],
-        "Tell me about one project you are proud of."
-    )
+    return ask_llm(prompt)
