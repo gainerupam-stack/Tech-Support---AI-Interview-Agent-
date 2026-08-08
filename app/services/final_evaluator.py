@@ -38,15 +38,24 @@ INTERVIEW TRANSCRIPT:
 
 {transcript}
 
-Evaluate the candidate based on:
+Evaluate the candidate based primarily on:
 
 1. Technical knowledge
 2. Problem solving ability
 3. Understanding of concepts
 4. Ability to explain technical ideas
 5. Consistency across the interview
-6. Strengths
-7. Weaknesses
+
+Also assess:
+
+6. Communication clarity and language quality, including grammar
+
+Communication quality should be treated as a supporting factor, not a major component of the overall score. Do not penalize a candidate heavily for minor grammatical mistakes if their technical understanding and reasoning are strong.
+
+Identify:
+
+7. Strengths
+8. Weaknesses
 
 Return your response in EXACTLY this format:
 
