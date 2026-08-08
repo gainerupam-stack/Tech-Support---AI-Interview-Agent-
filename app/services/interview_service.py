@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from app.services.data_loader import load_curriculum, load_candidates
 from app.services.topic_selector import choose_topic, get_available_topics
 from app.services.question_generator import generate_question
@@ -21,18 +22,24 @@ def process(request):
         candidates = load_candidates()
     
         # Find candidate
+        if request.candidate is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Candidate information is required to start an interview."
+            )
+        
         candidate = None
-    
+        
         for c in candidates["candidates"]:
             if c["member"]["id"] == request.candidate.member.id:
                 candidate = c
                 break
-    
+        
         if candidate is None:
-            return {
-                "reply": "Candidate not found.",
-                "done": True
-            }
+            raise HTTPException(
+                status_code=404,
+                detail="Candidate not found."
+            )
     
         # Get all curriculum topics available to this candidate
         available_topics = get_available_topics(
