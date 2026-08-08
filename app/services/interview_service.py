@@ -24,7 +24,7 @@ def process(request):
         candidate = None
     
         for c in candidates["candidates"]:
-            if c["member"]["id"] == request.candidate["member"]["id"]:
+            if c["member"]["id"] == request.candidate.member.id:
                 candidate = c
                 break
     
