@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from models.request import InterviewRequest
-from services.interview_service import process
+from app.models.request import InterviewRequest
+from app.services.interview_service import process
 
 router = APIRouter()
 

@@ -1,4 +1,4 @@
-from services.llm_service import ask_llm
+from app.services.llm_service import ask_llm
 
 def generate_question(topic):
 

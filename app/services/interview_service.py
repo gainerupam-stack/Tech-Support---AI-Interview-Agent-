@@ -1,8 +1,8 @@
 # app/services/interview_service.py
-from services.data_loader import load_curriculum, load_candidates
-from services.topic_selector import choose_topic
-from services.question_generator import generate_question
-from services.evaluator import evaluate_answer
+from app.services.data_loader import load_curriculum, load_candidates
+from app.services.topic_selector import choose_topic
+from app.services.question_generator import generate_question
+from app.services.evaluator import evaluate_answer
 sessions = {}
 
 
@@ -41,17 +41,34 @@ def process(request):
     # Later requests
     else:
 
-        sessions[request.sessionId]["history"].append(
+        session = sessions[request.sessionId]
+    
+        # Save the candidate's answer
+        session["history"].append({
+            "question": session["current_question"],
+            "answer": request.message
+        })
+    
+        # Evaluate the current answer
+        result = evaluate_answer(
+            session["current_question"],
             request.message
         )
-
-        sessions[request.sessionId]["question_number"] += 1
-        question = sessions[request.sessionId]["current_question"]
-        result = evaluate_answer(question,request.message)
+    
+        # Generate the next question
+        next_question = generate_question(
+            session["current_topic"]
+        )
+    
+        # Move to the next question
+        session["question_number"] += 1
+        session["current_question"] = next_question
+    
         return {
-        "reply":
-        f"Score: {result['score']}/10\n"
-        f"Feedback: {result['feedback']}\n\n"
-        f"Question {sessions[request.sessionId]['question_number']}",
-         "done": False
-                }
+            "reply":
+            f"Score: {result['score']}/10\n"
+            f"Feedback: {result['feedback']}\n\n"
+            f"Question {session['question_number']}:\n\n"
+            f"{next_question}",
+            "done": False
+        }
