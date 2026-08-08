@@ -62,7 +62,7 @@ def process(request):
         sessions[request.sessionId] = {
             "candidate": candidate,
             "history": [],
-    
+            "completed": False,
             "question_number": 1,
     
             "current_topic": topic,
@@ -88,7 +88,11 @@ def process(request):
     else:
     
         session = sessions[request.sessionId]
-    
+        if session["completed"]:
+             raise HTTPException(
+                   status_code=400,
+                   detail="Interview session is already completed."
+                )
         current_question = session["current_question"]
     
         # Evaluate answer
@@ -166,7 +170,7 @@ def process(request):
     
         if (len(session["history"]) >= MIN_QUESTIONS and len(session["covered_days"]) >= MIN_CURRICULUM_DAYS):
             final_evaluation = generate_final_evaluation(session["history"])
-        
+            session["completed"] = True
             return {
                 "reply": "Interview completed.",
                 "score": result["score"],
