@@ -2,6 +2,7 @@ from app.services.data_loader import load_curriculum, load_candidates
 from app.services.topic_selector import choose_topic, get_available_topics
 from app.services.question_generator import generate_question
 from app.services.evaluator import evaluate_answer
+from app.services.final_evaluator import generate_final_evaluation
 
 sessions = {}
 
@@ -158,15 +159,16 @@ def process(request):
         # CHECK MINIMUM QUESTION REQUIREMENT
         # -----------------------------------------------------
     
-        if (
-            len(session["history"]) >= MIN_QUESTIONS
-            and len(session["covered_days"]) >= MIN_CURRICULUM_DAYS
-        ):
+        if (len(session["history"]) >= MIN_QUESTIONS
+                and len(session["covered_days"]) >= MIN_CURRICULUM_DAYS):
+            final_evaluation = generate_final_evaluation(session["history"])
+        
             return {
                 "reply": (
                     f"Score: {result['score']}/10\n"
                     f"Feedback: {result['feedback']}\n\n"
-                    "Interview requirements completed."
+                    "===== FINAL INTERVIEW EVALUATION =====\n\n"
+                    f"{final_evaluation}"
                 ),
                 "done": True
             }
