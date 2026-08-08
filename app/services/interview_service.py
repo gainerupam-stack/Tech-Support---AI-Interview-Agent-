@@ -5,7 +5,6 @@ from app.services.question_generator import generate_question
 from app.services.evaluator import evaluate_answer
 sessions = {}
 
-
 def process(request):
 
     # First request of interview
@@ -39,36 +38,28 @@ def process(request):
                 "reply": f"Welcome!\n\nFirst Question:\n\n{question}","done": False
         }
     # Later requests
-    else:
+    else: 
+        session = sessions[request.sessionId] 
 
-        session = sessions[request.sessionId]
-    
-        # Save the candidate's answer
-        session["history"].append({
-            "question": session["current_question"],
-            "answer": request.message
-        })
-    
-        # Evaluate the current answer
-        result = evaluate_answer(
-            session["current_question"],
-            request.message
-        )
-    
-        # Generate the next question
-        next_question = generate_question(
-            session["current_topic"]
-        )
-    
-        # Move to the next question
-        session["question_number"] += 1
-        session["current_question"] = next_question
-    
-        return {
-            "reply":
-            f"Score: {result['score']}/10\n"
-            f"Feedback: {result['feedback']}\n\n"
-            f"Question {session['question_number']}:\n\n"
-            f"{next_question}",
-            "done": False
-        }
+        # Get the question that the candidate is answering 
+        current_question = session["current_question"] 
+
+        # Evaluate the candidate's answer 
+        result = evaluate_answer( current_question, request.message ) 
+        # Save the complete interaction to interview history 
+        session["history"].append({ "question": current_question, 
+                                   "answer": request.message, 
+                                   "score": result["score"], 
+                                   "feedback": result["feedback"] }) 
+        
+        # Generate the next question using the interview history 
+        next_question = generate_question(session["current_topic"], 
+                                          session["history"], result ) 
+        # Move to the next question 
+        session["question_number"] += 1 
+        session["current_question"] = next_question 
+        return { "reply": 
+                f"Score: {result['score']}/10\n" 
+                f"Feedback: {result['feedback']}\n\n" 
+                f"Question {session['question_number']}:\n\n" 
+                f"{next_question}", "done": False }
