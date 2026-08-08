@@ -74,6 +74,9 @@ WEAKNESSES:
 TECHNICAL_ASSESSMENT:
 <short paragraph>
 
+COMMUNICATION_ASSESSMENT:
+<short paragraph about clarity, grammar, and communication quality>
+
 RECOMMENDATION:
 <short hiring/interview recommendation>
 
