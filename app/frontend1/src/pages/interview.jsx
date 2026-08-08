@@ -6,6 +6,7 @@ function Interview({ candidate }) {
   const [question, setQuestion] = useState("")
   const [answer, setAnswer] = useState("")
   const [feedback, setFeedback] = useState("")
+  const [finalEvaluation, setFinalEvaluation] = useState("")
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
@@ -50,6 +51,13 @@ function Interview({ candidate }) {
         sessionId,
         answer
       )
+      if (data.done) {
+        setFinalEvaluation(
+          data.final_evaluation || "No final evaluation available."
+        )
+        setAnswer("")
+        return
+      }
 
       setFeedback(data.feedback || "")
       setQuestion(data.reply || "")
@@ -68,6 +76,18 @@ function Interview({ candidate }) {
 
   if (error && !question) {
     return <p>{error}</p>
+  }
+
+  if (finalEvaluation) {
+    return (
+      <main>
+        <h1>Interview Complete</h1>
+
+        <pre style={{ whiteSpace: "pre-wrap" }}>
+          {finalEvaluation}
+        </pre>
+      </main>
+    )
   }
 
   return (
