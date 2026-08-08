@@ -90,7 +90,7 @@ def process(request):
             current_question,
             request.message
         )
-    
+        session["question_number"] += 1
         # Save interaction
         session["history"].append({
             "question": current_question,
@@ -100,73 +100,66 @@ def process(request):
             "curriculum_day": session["current_day"]
         })
     
-        questions_asked = session["question_number"]
-    
         # -----------------------------------------------------
         # DETERMINE WHETHER TO CHANGE CURRICULUM DAY
         # -----------------------------------------------------
     
         covered_days = session["covered_days"]
-    
-        # If we have fewer than 4 curriculum days covered,
-        # prioritize moving to a new curriculum day.
-        if len(covered_days) < MIN_CURRICULUM_DAYS:
-    
-            next_topic = choose_topic(
-                session["candidate"],
-                load_curriculum(),
-                excluded_days=covered_days
-            )
-    
-            next_day = next_topic["day"]
-    
-            # If a new day was found, switch to it
-            if next_day not in covered_days:
-    
-                covered_days.add(next_day)
-    
-                next_question = generate_question(
-                    next_topic,
-                    session["history"],
-                    result
-                )
-    
-                session["current_topic"] = next_topic
-                session["current_day"] = next_day
-                session["current_question"] = next_question
-    
-            else:
-    
-                # Fallback: adaptive follow-up
-                next_question = generate_question(
-                    session["current_topic"],
-                    session["history"],
-                    result
-                )
-    
-                session["current_question"] = next_question
-    
-        else:
-    
-            # Once 4 curriculum days are covered,
-            # focus on adaptive follow-up questions.
+        
+        # Weak or incomplete answer → follow-up
+        if result["score"] < 8:
+        
             next_question = generate_question(
                 session["current_topic"],
                 session["history"],
                 result
             )
-    
+        
             session["current_question"] = next_question
-    
-        # Move to next question
-        session["question_number"] += 1
+        
+        # Strong answer → move to a new curriculum day
+        else:
+        
+            curriculum = load_curriculum()
+        
+            next_topic = choose_topic(
+                session["candidate"],
+                curriculum,
+                excluded_days=covered_days
+            )
+        
+            next_day = next_topic["day"]
+        
+            # New curriculum day available
+            if next_day not in covered_days:
+        
+                covered_days.add(next_day)
+        
+                next_question = generate_question(
+                    next_topic
+                )
+        
+                session["current_topic"] = next_topic
+                session["current_day"] = next_day
+                session["current_question"] = next_question
+        
+            # All available days already covered
+            else:
+        
+                next_question = generate_question(
+                    session["current_topic"],
+                    session["history"],
+                    result
+                )
+        
+                session["current_question"] = next_question
     
         # -----------------------------------------------------
         # CHECK MINIMUM QUESTION REQUIREMENT
         # -----------------------------------------------------
     
         if (
-            session["question_number"] > MIN_QUESTIONS
+            len(session["history"]) >= MIN_QUESTIONS
             and len(session["covered_days"]) >= MIN_CURRICULUM_DAYS
         ):
             return {
