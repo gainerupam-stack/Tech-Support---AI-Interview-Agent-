@@ -68,11 +68,9 @@ def process(request):
         }
     
         return {
-            "reply": (
-                "Welcome!\n\n"
-                "First Question:\n\n"
-                f"{question}"
-            ),
+            "reply": question,
+            "question_number": 1,
+            "curriculum_day": curriculum_day,
             "done": False
         }
     
@@ -159,26 +157,22 @@ def process(request):
         # CHECK MINIMUM QUESTION REQUIREMENT
         # -----------------------------------------------------
     
-        if (len(session["history"]) >= MIN_QUESTIONS
-                and len(session["covered_days"]) >= MIN_CURRICULUM_DAYS):
+        if (len(session["history"]) >= MIN_QUESTIONS and len(session["covered_days"]) >= MIN_CURRICULUM_DAYS):
             final_evaluation = generate_final_evaluation(session["history"])
         
             return {
-                "reply": (
-                    f"Score: {result['score']}/10\n"
-                    f"Feedback: {result['feedback']}\n\n"
-                    "===== FINAL INTERVIEW EVALUATION =====\n\n"
-                    f"{final_evaluation}"
-                ),
-                "done": True
+                "reply": "Interview completed.",
+                "score": result["score"],
+                "feedback": result["feedback"],
+                "done": True,
+                "final_evaluation": final_evaluation
             }
     
         return {
-            "reply": (
-                f"Score: {result['score']}/10\n"
-                f"Feedback: {result['feedback']}\n\n"
-                f"Question {session['question_number']}:\n\n"
-                f"{session['current_question']}"
-            ),
+            "reply": session["current_question"],
+            "score": result["score"],
+            "feedback": result["feedback"],
+            "question_number": session["question_number"],
+            "curriculum_day": session["current_day"],
             "done": False
         }
