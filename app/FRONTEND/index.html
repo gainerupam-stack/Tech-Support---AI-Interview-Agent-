@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABTalks AI — Interview Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">AB</div>
+        <div>
+          <div class="brand-title">ABTalks AI</div>
+          <div class="brand-subtitle">Interview Agent</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="status-dot"></span>
+        <span id="connectionLabel">Ready</span>
+        <button id="themeBtn" class="icon-btn" title="Toggle theme">☾</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="sidebar">
+        <section class="profile-card">
+          <div class="eyebrow">Candidate</div>
+          <select id="candidateSelect" class="candidate-select"></select>
+          <div id="candidateMeta" class="candidate-meta"></div>
+        </section>
+
+        <section class="progress-card">
+          <div class="section-heading">
+            <span>Interview progress</span>
+            <strong id="progressText">0 / 8+</strong>
+          </div>
+          <div class="progress-track">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+          <div class="progress-note">Minimum 8 questions · 4+ curriculum days</div>
+        </section>
+
+        <section class="coverage-card">
+          <div class="eyebrow">Curriculum coverage</div>
+          <div id="coverageList" class="coverage-list"></div>
+        </section>
+
+        <button id="newInterviewBtn" class="new-interview-btn">＋ New interview</button>
+      </aside>
+
+      <section class="interview-panel">
+        <div class="interview-header">
+          <div>
+            <div class="eyebrow">Technical interview</div>
+            <h1 id="interviewTitle">Ready when you are.</h1>
+            <p id="interviewSubtitle">Personalized from the candidate's cohort journey.</p>
+          </div>
+          <div class="header-pills">
+            <span class="pill">31-day cohort</span>
+            <span id="modePill" class="pill accent">Live agent</span>
+          </div>
+        </div>
+
+        <div id="chat" class="chat" aria-live="polite">
+          <div class="welcome-state">
+            <div class="welcome-icon">✦</div>
+            <h2>AI Interview Agent</h2>
+            <p>Select a candidate and start a realistic, adaptive technical interview.</p>
+            <div class="feature-row">
+              <span>↳ Follow-ups</span>
+              <span>◈ Context-aware</span>
+              <span>✓ Structured feedback</span>
+            </div>
+            <button id="startBtn" class="primary-btn">Start interview</button>
+          </div>
+        </div>
+
+        <div class="composer-wrap">
+          <form id="composer" class="composer">
+            <textarea id="messageInput" rows="1" placeholder="Type your answer..." disabled></textarea>
+            <button id="sendBtn" class="send-btn" type="submit" disabled>➤</button>
+          </form>
+          <div class="composer-footer">
+            <span>Enter to send · Shift + Enter for a new line</span>
+            <span id="sessionLabel">No active session</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="insights-panel">
+        <div class="insights-header">
+          <div class="eyebrow">Interview intelligence</div>
+          <h2>Candidate snapshot</h2>
+        </div>
+
+        <div id="snapshot" class="snapshot"></div>
+
+        <div class="insight-section">
+          <div class="eyebrow">Recommended focus</div>
+          <div id="focusList" class="focus-list"></div>
+        </div>
+
+        <div id="feedbackPanel" class="feedback-panel hidden">
+          <div class="feedback-top">
+            <div>
+              <div class="eyebrow">Interview complete</div>
+              <h2>Performance report</h2>
+            </div>
+            <div id="scoreBadge" class="score-badge">—</div>
+          </div>
+          <div id="feedbackContent"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
