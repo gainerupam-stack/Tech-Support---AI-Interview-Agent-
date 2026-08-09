@@ -357,4 +357,15 @@ AI assistance was used throughout backend development for:
 The Chat GPT AI was used as a development and debugging assistant. The resulting backend was tested and iteratively modified to satisfy the application's interview requirements and deployment constraints.
 
 ---
+## Frontend Development
 
+The frontend was developed with AI assistance by the frontend team.
+
+The development process used multiple AI assistants:
+- ChatGPT — initial frontend scaffolding and implementation assistance
+- Claude — subsequent frontend development and refinement
+- Grok — continued development and final UI/UX work after the Claude session became unavailable
+
+The frontend was developed separately from the backend and was subsequently integrated with the deployed FastAPI backend.
+
+The detailed backend prompt history is included above because the backend contains the core AI interview-agent implementation and represents the primary AI/agent development work.
