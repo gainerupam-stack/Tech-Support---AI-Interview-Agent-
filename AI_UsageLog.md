@@ -357,15 +357,26 @@ AI assistance was used throughout backend development for:
 The Chat GPT AI was used as a development and debugging assistant. The resulting backend was tested and iteratively modified to satisfy the application's interview requirements and deployment constraints.
 
 ---
-## Frontend Development
+AI-Assisted Frontend Development
 
-The frontend was developed with AI assistance by the frontend team.
+The frontend of this project was developed with AI-assisted coding and iterative refinement during the hackathon.
 
-The development process used multiple AI assistants:
-- ChatGPT — initial frontend scaffolding and implementation assistance
-- Claude — subsequent frontend development and refinement
-- Grok — continued development and final UI/UX work after the Claude session became unavailable
+AI Tools Used
 
-The frontend was developed separately from the backend and was subsequently integrated with the deployed FastAPI backend.
+Claude — Frontend Creation & UI/UX Development
+Claude was used during the initial development of the frontend, including creating the frontend structure, implementing the interface, connecting UI components, and refining the overall user experience.
 
-The detailed backend prompt history is included above because the backend contains the core AI interview-agent implementation and represents the primary AI/agent development work.
+Shared conversation:
+https://claude.ai/share/ac760d81-36d2-4bbe-a60c-654a14a5d060
+
+Grok — Frontend/Backend Integration
+Grok was used during the integration stage to continue development from the existing frontend work and assist with connecting the frontend to the backend API, resolving integration issues, and ensuring the application worked with the deployed backend.
+
+Shared conversation:
+https://grok.com/share/c2hhcmQtMi1jb3B5_c5c3b756-da84-49f2-8299-fe56fe0dff62
+
+Development Approach
+
+The frontend was built iteratively rather than being imported as a pre-existing application. AI-generated suggestions were reviewed, adapted, tested, and integrated into the project throughout development.
+
+The final frontend was then connected to the deployed FastAPI backend and tested through the live application.
