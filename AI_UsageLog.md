@@ -354,19 +354,7 @@ AI assistance was used throughout backend development for:
 19. API contract validation
 20. Final integration and debugging
 
-The AI was used as a development and debugging assistant. The resulting backend was tested and iteratively modified to satisfy the application's interview requirements and deployment constraints.
+The Chat GPT AI was used as a development and debugging assistant. The resulting backend was tested and iteratively modified to satisfy the application's interview requirements and deployment constraints.
 
 ---
 
-## Excluded Work
-
-The following work is intentionally not represented in this log because it belonged to the frontend/frontend-testing work rather than the backend interview-agent implementation:
-
-* React frontend development
-* Frontend HTML/CSS/JavaScript implementation
-* Frontend-testing branch development
-* Frontend UI design
-* Frontend-only debugging
-* Client-side state management
-* Frontend Live Server issues
-* Frontend-specific API integration changes
