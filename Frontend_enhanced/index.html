@@ -894,7 +894,10 @@ document.addEventListener('click', (e) => {
     if(state.candidatesStatus === 'idle') loadCandidates();
   }
   else if(action==='reload-candidates'){ loadCandidates(); }
-  
+  else if(action==='go-curriculum'){
+    stopTimer(); state.view='curriculum'; render();
+    if(state.curriculumStatus === 'idle') loadCurriculum();
+  }
   else if(action==='reload-curriculum'){ loadCurriculum(); }
   else if(action==='scroll-how-it-works'){
     if(state.view !== 'landing'){
@@ -908,7 +911,10 @@ document.addEventListener('click', (e) => {
       if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
     }
   }
-  
+  else if(action==='select-candidate'){
+    const c = state.candidates.find(x => candId(x) === el.dataset.id);
+    if(c){ state.selectedCandidate = c; state.showRawCandidate = false; render(); }
+  }
   else if(action==='use-manual-candidate'){
     const id = state.manualId.trim();
     if(!id){ alert('Please enter a candidate ID.'); return; }
@@ -934,6 +940,14 @@ function resetInterviewState(){
   state.lastPayload = null;
 }
 
+function applyMeta(result){
+  state.meta.topic = firstDefined(result.topic, result.currentTopic, state.meta.topic);
+  state.meta.difficulty = firstDefined(result.difficulty, state.meta.difficulty);
+  state.meta.followUp = !!result.followUp;
+  state.meta.progress = firstDefined(result.progress, state.meta.progress);
+  state.meta.questionNumber = firstDefined(result.questionNumber, result.turn, state.meta.questionNumber);
+  state.meta.totalQuestions = firstDefined(result.totalQuestions, result.total, state.meta.totalQuestions);
+}
 
 async function startInterview(){
   const c = state.selectedCandidate;
@@ -1030,7 +1044,7 @@ function downloadReport(){
   const fb = state.feedback;
   if(!c || !fb) return;
   const lines = [
-    
+    'AI Interview Agent — Feedback Report',
     'Candidate: ' + candName(c) + (candId(c) ? (' (' + candId(c) + ')') : ''),
   ];
   const overall = firstDefined(fb.overall, fb.score, fb.overallScore);
