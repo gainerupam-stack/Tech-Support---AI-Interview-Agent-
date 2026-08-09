@@ -964,10 +964,7 @@ async function startInterview(){
     if(el) el.textContent = fmtTime(state.elapsed);
   }, 1000);
 
-  const payload = { sessionId: state.sessionId, candidate: c };
-  state.lastPayload = { kind:'start', payload };
-  const res = await apiPost(INTERVIEW_ENDPOINT, payload);
-  state.thinking = false;
+  
 
   if(!res.ok){
     state.messages.push({ role:'error', text: res.error });
@@ -983,10 +980,7 @@ async function handleSend(){
   const text = input.value.trim();
   if(!text) return;
 
-  state.messages.push({ role:'user', text });
-  state.turnCount++;
-  state.thinking = true;
-  render();
+  
 
   const payload = { sessionId: state.sessionId, message: text };
   state.lastPayload = { kind:'turn', payload };
@@ -1055,7 +1049,7 @@ function downloadReport(){
   lines.push('', 'Strengths:', ...(fb.strengths||[]).map(s=>'- '+s));
   lines.push('', 'Gaps:', ...(fb.gaps||[]).map(s=>'- '+s));
   lines.push('', 'Next Steps:', ...(fb.next||[]).map(s=>'- '+s));
-  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = 'interview-feedback-' + (candId(c)||'candidate') + '.txt'; a.click();
